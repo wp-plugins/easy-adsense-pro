@@ -3,7 +3,7 @@
 Plugin Name: Easy AdSense Pro
 Plugin URI: http://www.thulasidas.com/adsense
 Description: Easiest way to show AdSense and make money from your blog. Configure it at <a href="options-general.php?page=easy-adsense-pro.php">Settings &rarr; Easy AdSense</a>.
-Version: 4.01
+Version: 4.02
 Author: Manoj Thulasidas (Modified by Mark Animon)
 Author URI: http://www.thulasidas.com
 */
@@ -240,7 +240,7 @@ if (!class_exists("ezAdSense")) {
     function handleDefaultText($text, $key = '300x250') {
       $ret = $text ;
       $this->isPro = file_exists(dirname (__FILE__).'/pro/pro.php') ;
-      if  ($this->isPro) {
+      if  ($this->isPro && $ret == $this->defaults['defaultText']) {
         $x = strpos($key, 'x') ;
         $w = substr($key, 0, $x);
         $h = substr($key, $x+1);
@@ -420,7 +420,7 @@ if (!class_exists("ezAdSense")) {
           unset($l10n['easy-adsenser']) ; // this is probably a memory leak!
         load_textdomain('easy-adsenser', $moFile);
         echo '<div class="updated"><p><strong>Ok, in English for now. ' .
-          '<a href="options-general.php?page=easy-adsenser.php">Switch back</a>.</strong></p> </div>' ;
+          '<a href="options-general.php?page=easy-adsense-pro.php">Switch back</a>.</strong></p> </div>' ;
       }
       else if (isset($_POST['clean_db']) || isset($_POST['kill_me'])) {
         $reset = true ;
@@ -875,14 +875,14 @@ if (!class_exists("ezAdSense")) {
 
     function widget_ezAd_control() {
       echo '<p>Configure it at <br />' ;
-      echo '<a href="options-general.php?page=easy-adsenser.php"> ';
+      echo '<a href="options-general.php?page=easy-adsense-pro.php"> ';
       echo 'Settings &rarr; Easy AdSense</a>' ;
       echo '</p>' ;
     }
 
     function widget_ezAd_lu_control($widget_args = 1) {
       echo '<p>Configure it at <br />' ;
-      echo '<a href="options-general.php?page=easy-adsenser.php"> ';
+      echo '<a href="options-general.php?page=easy-adsense-pro.php"> ';
       echo 'Settings &rarr; Easy AdSense</a>' ;
       echo '</p>' ;
     }

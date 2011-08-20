@@ -120,7 +120,7 @@ ISBN:<br />9789810575946&nbsp;
 </td>
 <td>
 <a style="text-decoration:none;" href="http://www.amazon.com/exec/obidos/ASIN/9810575947/unrblo-20" title="Find out more about The Unreal Universe and buy it ($9.95 for Kindle, $15.95 for paperback). It will change the way you view life and reality!">
-<img class="alignright" src="http://www.thulasidas.com/img/unreal.gif" border="0px" alt="TheUnrealUniverse" title="Read more about The Unreal Universe" />
+<img class="alignright" src="http://dl.dropbox.com/u/15050446/unreal.gif" border="0px" alt="TheUnrealUniverse" title="Read more about The Unreal Universe" />
 </a>
 </td>
 </tr>
@@ -140,7 +140,7 @@ ISBN:<br />9789810575946&nbsp;
 <tr><td style="padding:0px">
 <div style="border:solid 1px #faa;height:126px;width:82px;">
 <a style="text-decoration:none;" href="http://www.amazon.com/exec/obidos/ASIN/0470745703/unrblo-20" title="Find out more about Principles of Quantitative Development and buy it from Amazon.com">
-<img src="http://www.thulasidas.com/img/pqd-82x126.gif" border="0px" alt="PQD" title="Principles of Quantitative Development from Amazon.com" />
+<img src="http://dl.dropbox.com/u/15050446/pqd-82x126.gif" border="0px" alt="PQD" title="Principles of Quantitative Development from Amazon.com" />
 </a>
 </div>
 </td>
