@@ -19,7 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 @include(dirname (__FILE__).'/myPlugins.php');
-// $plgName = basename(dirname(__FILE__)) ;
 $plgName = 'easy-adsense' ;
 $ezIsPro = is_dir(dirname (__FILE__).'/pro') && file_exists(dirname (__FILE__).'/pro/pro.php') ;
 

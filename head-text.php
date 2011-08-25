@@ -29,7 +29,7 @@ function renderHeadText($name, $plg, $isPro) {
   $price = $plg['price'] ;
   $moreInfo =
     "&nbsp; <a href='http://buy.ads-ez.com/$name/$name.zip' title='Download the Lite version of $value'>Lite Version </a>" .
-    "&nbsp; <a href='http://buy.ads-ez.com/$name' title='Buy the Pro Lite version of $value for \$$price'>Pro Version</a>" ;
+    "&nbsp; <a href='http://buy.ads-ez.com/$name' title='Buy the Pro version of $value for \$$price'>Pro Version</a>" ;
   $toolTip .= addslashes('<br />' . $moreInfo) ;
   $why = addslashes($plg['pro']) ;
   if ($isPro) $version = 'Pro' ;

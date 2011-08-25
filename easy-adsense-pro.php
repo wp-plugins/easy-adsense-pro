@@ -3,7 +3,7 @@
 Plugin Name: Easy AdSense Pro
 Plugin URI: http://www.thulasidas.com/adsense
 Description: Easiest way to show AdSense and make money from your blog. Configure it at <a href="options-general.php?page=easy-adsense-pro.php">Settings &rarr; Easy AdSense</a>.
-Version: 4.02
+Version: 4.03
 Author: Manoj Thulasidas (Modified by Mark Animon)
 Author URI: http://www.thulasidas.com
 */
@@ -29,7 +29,7 @@ if (!class_exists("ezAdSense")) {
   class ezAdSense {
     var $plugindir, $invite, $locale, $defaults, $ezTran, $md5,
       $leadin, $leadout, $adminOptions, $adminOptionName, $mcAd,
-      $isFiltered, $isPure, $isPro ;
+      $isPro ;
     function ezAdSense() { //constructor
       if (file_exists (dirname (__FILE__).'/defaults.php')){
         include (dirname (__FILE__).'/defaults.php');
@@ -38,8 +38,6 @@ if (!class_exists("ezAdSense")) {
       if (empty($this->defaults))  {
         add_action('admin_notices', create_function('', 'if (substr( $_SERVER["PHP_SELF"], -11 ) == "plugins.php"|| $_GET["page"] == "easy-adsense.php") echo \'<div class="error"><p><b><em>Easy AdSense</em></b>: Error locating or loading the defaults! Ensure <code>defaults.php</code> exists, or reinstall the plugin.</p></div>\';')) ;
       }
-      $this->isFiltered = false ;
-      $this->isPure = false ;
       if ((isset($_POST['ezAds-translate']) && strlen($_POST['ezAds-translate']) > 0) ||
           (isset($_POST['ezAds-make']) && strlen($_POST['ezAds-make']) > 0) ||
           (isset($_POST['ezAds-clear']) && strlen($_POST['ezAds-clear']) > 0) ||
@@ -91,8 +89,6 @@ if (!class_exists("ezAdSense")) {
     // Returns an array of admin options
     function getAdminOptions($reset = false) {
       if (!$reset && count($this->adminOptions) > 0) {
-        $this->isPure = $this->adminOptions['isPure'] == 'Yes' &&
-          $this->adminOptions['policy'] != 'No' ;
         return $this->adminOptions ;
       }
       $this->setLang() ;
@@ -104,7 +100,6 @@ if (!class_exists("ezAdSense")) {
       $ezAdSenseAdminOptions =
         array('info' => "<!-- Easy AdSense V4.00 -->\n",
               'policy' => 'unknown',
-              'isPure' => 'No',
               'show_leadin' => 'float:right',
               'wc_leadin' => 0,
               'margin_leadin' => 12,
@@ -170,76 +165,14 @@ if (!class_exists("ezAdSense")) {
       return $ezAdSenseAdminOptions;
     }
 
-    function gFilter($content) {
-      if ($this->isFiltered) return ;
-      $this->isFiltered = true ;
-
-      $locale = $this->locale ;
-      $isPure = strpos($locale, 'en_') == 0 ;
-      if ($isPure) $isPure = $this->adminOptions['policy'] != 'No' ;
-      if ($isPure) {
-        ////////////////////////////// snip //////////////////////
-        $banned = $this->defaults['banned'] ;
-        $content = strtolower(strip_tags($content));
-        $str_word_count = str_word_count($content, 1) ;
-        $bkeys = array_keys($banned) ;
-        $intersect = array_intersect($str_word_count, $bkeys ) ;
-        $words = array_count_values(array_intersect($str_word_count, $bkeys));
-
-        $score = 0 ;
-        foreach ($words as $word => $freq) {
-          $score += $freq * $banned[$word] ;
-        }
-        if ($score > 0) {
-          $wc =  str_word_count($content) ;
-          if ($wc > 0) $score /= $wc*0.1 ;
-        }
-        ////////////////////////////// snip //////////////////////
-
-        $isPure = $score < 0.1 ;
-      }
-      if ($isPure && $this->adminOptions['isPure'] != 'Yes') {
-        $this->adminOptions['isPure'] = 'Yes' ;
-        update_option($this->adminOptionName, $this->adminOptions) ;
-      }
-      if (!$isPure && $this->adminOptions['isPure'] == 'Yes') {
-        $this->adminOptions['isPure'] = 'No' ;
-        update_option($this->adminOptionName, $this->adminOptions) ;
-      }
-      $this->isPure = $isPure ;
-      return ;
-    }
-
-    function validSize($size) {
-      $sizes = array_keys($this->defaults['ads']) ;
-      if (in_array($size, $sizes)) return $size ;
-      else return "300x250" ;
-    }
-
-    function splitSize($size) {
-      $x = strpos($size, 'x') ;
-      $w = substr($size, 0, $x);
-      $h = substr($size, $x+1);
-      $needle = array($w, $h) ;
-      return $needle ;
-    }
-
-    function mkCode($size, $pop=false) {
-      $size = $this->validSize($size) ;
-      $ad = $this->defaults['ads'][$size]['bvP'] ;
-      if ($pop && !is_user_logged_in()) $ad = $this->defaults['ads'][$size]['bv']  ;
-      return $ad ;
-    }
-
-    function replaceAd($key) {
-      $mcAds = $this->defaults['ads'][$key] ;
-      if (empty($mcAds)) $mcAds = $this->defaults['ads']['300x250'] ;
-      return htmlspecialchars_decode($mcAds[array_rand($mcAds)]) ;
+    function pickAnAd($key) {
+      $picked = str_replace("INSERT_RANDOM_NUMBER_HERE", mt_rand(0, 10000), $this->defaults['ads'][$key]['adsez']) ;
+      if (empty($picked)) $picked = str_replace("INSERT_RANDOM_NUMBER_HERE", mt_rand(0, 10000), $this->defaults['ads']['300x250']['adsez']) ;
+      return htmlspecialchars_decode($picked) ;
     }
 
     function handleDefaultText($text, $key = '300x250') {
       $ret = $text ;
-      $this->isPro = file_exists(dirname (__FILE__).'/pro/pro.php') ;
       if  ($this->isPro && $ret == $this->defaults['defaultText']) {
         $x = strpos($key, 'x') ;
         $w = substr($key, 0, $x);
@@ -251,19 +184,8 @@ if (!class_exists("ezAdSense")) {
       if ($ret == $this->defaults['defaultText']
         || strlen(trim($ret)) == 0
         || strpos($ret, '1213643583738263') !== FALSE) {
-        $pop = $this->adminOptions['allow_popunder'] == 'Yes' ;
-        $picked = $this->mkCode($key, $pop) ;
-        if (!$this->isPure) {
-          $picked = str_replace("INSERT_RANDOM_NUMBER_HERE", mt_rand(0, 10000), $this->defaults['ads'][$key]['adsez']) ;
-        }
-        $ret = htmlspecialchars_decode($picked) ;
+        return $this->pickAnAd($key) ;
       }
-      if (empty($ret))
-        $ret = $this->replaceAd($key) ;
-      if (!$this->isPure && strpos($ret, 'manojt') !== FALSE)
-        $ret = $this->replaceAd($key) ;
-      $this->mced = true ;
-      return $ret ;
     }
 
     function handleDefaults(&$options)
@@ -433,7 +355,7 @@ if (!class_exists("ezAdSense")) {
 
         if (isset($_POST['kill_me'])) {
           remove_action('admin_menu', 'ezAdSense_ap');
-          deactivate_plugins('easy-adsenser/easy-adsenser.php', true);
+          deactivate_plugins('easy-adsense-pro/easy-adsense-pro.php', true);
           echo '<div class="updated"><p><strong>' ;
           _e("This plugin has been deactivated.", "easy-adsenser");
           echo '<a href="plugins.php?deactivate=true">';
@@ -541,7 +463,7 @@ if (!class_exists("ezAdSense")) {
       return $metaOptions ;
     }
 
-    function mc($mc, $ad, $size=false) {
+    function mc($mc, $ad, $size=false, $key='160x600') {
       if ($mc <= 0 || $this->mced) return $ad ;
       $ret = $ad ;
       // 1.11 is the approx. solution to (p/s) in the eqn:
@@ -552,17 +474,8 @@ if (!class_exists("ezAdSense")) {
       else $rnd = 1 ;
       if ($rnd < $mx) {
         if (!$size) $key = '300x250' ;
-        if (ereg ("([0-9]{3}x[0-9]{2,3})", $ad, $regs)) $key = $regs[1] ;
-        $pop = $this->adminOptions['allow_popunder'] == 'Yes' ;
-        $picked = $this->mkCode($key, $pop) ;
-        if (!$this->isPure) {
-          $picked = str_replace("INSERT_RANDOM_NUMBER_HERE", mt_rand(0, 10000), $this->defaults['ads'][$key]['adsez']) ;
-        }
-        $ret = htmlspecialchars_decode($picked) ;
-        if (!$this->isPure && strpos($ret, 'manojt') !== FALSE)
-          $ret = $this->replaceAd($key) ;
-        if (empty($ret) || strpos($ret, '1213643583738263') !== FALSE)
-          $ret = $this->replaceAd($key) ;
+        else if (ereg ("([0-9]{3}x[0-9]{2,3})", $ad, $regs)) $key = $regs[1] ;
+        $ret = $this->pickAnAd($key) ;
         $this->mced = true ;
       }
       return $ret ;
@@ -579,6 +492,7 @@ if (!class_exists("ezAdSense")) {
       if ($ezAdOptions['kill_cat'] && is_category()) return $content ;
       if ($ezAdOptions['kill_tag'] && is_tag()) return $content ;
       if ($ezAdOptions['kill_archive'] && is_archive()) return $content ;
+      $this->isPro = file_exists(dirname (__FILE__).'/pro/pro.php') ;
       $mc = $ezAdOptions['mc'] ;
       $this->mced = false ;
       $this->ezMax = $ezAdOptions['max_count'] ;
@@ -589,7 +503,6 @@ if (!class_exists("ezAdSense")) {
       if(strpos($content, "<!--noadsense-->") !== false) return $content;
       $metaOptions = $this->contentMeta() ;
       if (isset($metaOptions['adsense']) && $metaOptions['adsense'] == 'no') return $content;
-      if (!$this->isFiltered) $this->gFilter($content) ;
       $this->handleDefaults($ezAdOptions) ;
 
       $wc = str_word_count($content) ;
