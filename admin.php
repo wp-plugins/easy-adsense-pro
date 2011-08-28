@@ -364,11 +364,13 @@ Colors:&nbsp; Normal:#<input style="width:55px;text-align:center;" id="ezBorderN
 <td width="50%" height="250px" valign="middle">
 
 <div style="background-color:#cff;padding:5px;border: solid 1px">
-<?php if (file_exists(dirname (__FILE__).'/pro/pro.php'))
-   include (dirname (__FILE__).'/pro/pro.php');
-else {
-   @include (dirname (__FILE__).'/why-pro.php');
- } ?>
+<?php
+  if ($this->isPro)
+    include (dirname (__FILE__).'/pro/pro.php');
+  else {
+    @include (dirname (__FILE__).'/why-pro.php');
+  }
+?>
 </div>
 
 <div style="background-color:#fcf;padding:5px;border: solid 1px">

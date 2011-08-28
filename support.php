@@ -4,7 +4,7 @@ function renderSupport($name, $plg) {
   $value = $plg['value'];
   $desc = $plg['desc'] ;
   $support = $plg['support'] ;
-  $url = 'http://www.thulasidas.com/plugins/' . $name ;
+  $url = 'http://www.thulasidas.com/plugins/' . $name . '-more#FAQ' ;
   $link = '<b><a href="' . $url . '" target="_blank">' . $value . '</a> </b>' ;
 
 echo "<b>$value uses a paid support model for both Lite and Pro versions</b><br />
