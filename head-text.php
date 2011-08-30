@@ -40,7 +40,7 @@ function renderHeadText($name, $plg, $isPro) {
 You are using the $version version of $value, which is available in two versions:
 <ul><li>
 $moreInfo
-<li>$why And it costs only \$$price</li>
+<li>$why And it costs only \$$price!</li>
 </ul>" ;
 }
 function renderProText($name, $plg, $isPro) {
@@ -58,39 +58,44 @@ function renderProText($name, $plg, $isPro) {
 <big style="color:#a48;font-variant: small-caps;text-decoration:underline" onmouseover="TagToTip(\'pro\', WIDTH, 230, TITLE, \'Buy the Pro Version\',STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true, FIX, [this, 5, 5])"><b>The Pro Version</b></big>
 </center>' ;
 
-  if ($isPro) echo "You are using the \"Pro\" version. If you haven't paid your licensing fee, please go legal and <a href='http://buy.ads-ez.com/$name' title='Pro version of this plugin'>get a legal copy</a>. It's only \$" . $price ;
-  else  echo "You are using the \"Lite\" version of $value. The \"Pro\" version gives you more options. Consider <a href='http://buy.ads-ez.com/$name' title='Pro version of this plugin'>buying it</a>. It's only \$" . $price ;
+  if ($isPro) echo "You are using the \"Pro\" version. If you haven't paid your licensing fee, please go legal and <a href='http://buy.ads-ez.com/$name' title='Pro version of this plugin'>get a legal copy</a>. It costs only \$$price." ;
+  else  echo "You are using the \"Lite\" version of $value. The \"Pro\" version gives you more options. Consider <a href='http://buy.ads-ez.com/$name' title='Pro version of this plugin'>buying it</a>. It costs only \$$price." ;
 
-  if ($name == 'easy-adsense' || $name == 'adsense-now') {
-    echo '</div>
-<div id="share" style="padding:5px"> ';
-    printf(__("Starting version %3.1f, <em>%s</em> has an ad space sharing option, if you would like to support its future development. It gives you an option to share a small fraction of your ad slots (default is 5%%) to show the author's ads. Use the option (in \"Support %s by Donating Ad Space\") below to change the value, or turn it off (by entering 0%%) [Pro feature].", 'easy-adsenser'), 2.5, $value,  $value) ;
-    echo "</div>" ;
-  }
   echo "<div id='pro'>" ;
   renderHeadText($name, $plg, $isPro) ;
   echo "</div>" ;
 }
 
-?>
-<td width="30%">
-<?php
-  if (!$ezIsPro) $supportText = "<div style=\"background-color:#cff;padding:5px;border: solid 1px\" id=\"support\"><b><a href=\"http://buy.ads-ez.com/$plgName\" title=\"Pro version of this plugin\">Go Pro! </a>Or Support this Plugin!</b>" ;
+function renderSupportText($name, $plg, $isPro, $long=true) {
+  $value = $plg['value'];
+  if (!$isPro) $supportText = "<div style=\"background-color:#cff;padding:5px;border: solid 1px\" id=\"support\"><b><a href=\"http://buy.ads-ez.com/$name\" title=\"Pro version of this plugin\">Go Pro!</a> Support $value</b>" ;
   else $supportText .= "<div style=\"background-color:#cff;padding:5px;border: solid 1px\" id=\"support\"><b>Thank you for going Pro!</b>";
-if ($plgName == 'easy-adsense'|| $plgName == 'adsense-now')
-  $supportText .= "<br /><span style='text-decoration:underline' onmouseover=\"TagToTip('share', WIDTH, 230, TITLE, 'Ad Space Sharing',STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true, FIX, [this, 5, 2])\" onmouseout=\"UnTip()\">Share a small fraction of your ad space</span>, " ;
-else
-  $supportText .= '<br />Give me some <a href="http://db.tt/qsogWB1" title="Sign up for Dropbox -- free 2GB online storage on the cloud!" target="_blank">space</a>!' ;
-$supportText .= "<br />Check out my books <span style=\"text-decoration:underline\" onmouseover=\"TagToTip('unreal', WIDTH, 205, TITLE, 'Buy &lt;em&gt;The Unreal Universe&lt;/em&gt;',STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true, FIX, [this, 5, 2])\"><b style=\"color:#a48;font-variant: small-caps;text-decoration:underline\">The Unreal Universe</b></span> or <span style=\"text-decoration:underline\" onmouseover=\"TagToTip('pqd', WIDTH, 205, TITLE, '&lt;em&gt;Principles of Quant. Devel.&lt;/em&gt;',STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true, FIX, [this, 5, 2])\"><b style=\"color:#84a;font-variant: small-caps;text-decoration:underline\">Principles of Quantitative Development</b></span>.</div>" ;
-echo $supportText ;
- ?>
-</td>
+  if ($long) $longText = "How about " ;
+  else $longText= '' ;
+  $supportText .= "<br />$longText<span onmouseover=\"TagToTip('dropbox', WIDTH, 640, TITLE, 'What is DropBox?',STICKY, 1, CLOSEBTN, true, FIX, [this, -150, 2])\"><a href='http://db.tt/qsogWB1' title='Sign up for Dropbox -- free 2GB online storage on the cloud!' target='_blank'>2GB of <em>free</em> online storage</a></span>?" ;
+  if ($long) $longText = "WordPress Hosting for " ;
+  else $longText= 'Hosting for ' ;
+  $supportText .= "<br />$longText<span onmouseover=\"TagToTip('arvixe', WIDTH, 600, TITLE, 'Arvixe - My favorite provider!',STICKY, 1, CLOSEBTN, true, FIX, [this, -200, 2])\"><a href='http://www.arvixe.com/1933.html' target='_blank'>just $4/month</a></span>. " ;
+  if ($long) $longText = "My books on " ;
+  else $longText= 'Books: ' ;
+  $supportText .= "<br />$longText<span style=\"text-decoration:underline\" onmouseover=\"TagToTip('unreal', WIDTH, 205, TITLE, 'Buy &lt;em&gt;The Unreal Universe&lt;/em&gt;',STICKY, 1, CLOSEBTN, true, FIX, [this, 5, 2])\"><b><a href='http://www.amazon.com/exec/obidos/ASIN/9810575947/unrblo-20' target='_blank'>Physics</a></b></span> or " ;
+  $supportText .= "<span style=\"text-decoration:underline\" onmouseover=\"TagToTip('pqd', WIDTH, 205, TITLE, '&lt;em&gt;Principles of Quant. Devel.&lt;/em&gt;',STICKY, 1, CLOSEBTN, true, FIX, [this, 5, 2])\"><b><a href='http://www.amazon.com/exec/obidos/ASIN/0470745703/unrblo-20' target='_blank'>Money</a></b></span>." ;
+  if ($plg['share'])
+    $supportText .= "<br /><span style='text-decoration:underline' onmouseover=\"TagToTip('share', WIDTH, 230, TITLE, 'Ad Space Sharing',STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true, FIX, [this, 5, 2])\" onmouseout=\"UnTip()\">Share a small fraction of your ad space.</span></div> " ;
+  else
+    $supportText .= "<br /><span style='text-decoration:underline' onmouseover=\"TagToTip('share', WIDTH, 230, TITLE, 'Ad Space Sharing',STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true, FIX, [this, 5, 2])\" onmouseout=\"UnTip()\">Please link back to the author's blog.</span></div> " ;
+  echo $supportText ;
+}
 
-<td width="30%">
+function renderTipDivs($name, $share) {
+echo <<<ENDDIVS
+<div id="arvixe">
+<a href="http://www.arvixe.com/1933-27-1-310.html" target="_blank"><img border="0" src="https://affiliates.arvixe.com/banners/600.77.WordPress.gif" width="600" height="77" alt=""></a>
+</div>
 
-<?php
-  renderProText($plgName, $myPlugins[$plgName], $ezIsPro) ;
-?>
+<div id="dropbox">
+<object width="640" height="385"><param name="movie" value="http://www.youtube.com/e/OFb0NaeRmdg"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/e/OFb0NaeRmdg" type="application/x-shockwave-flash" width="640" height="385" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+</div>
 
 <div id="unreal" style="margin-left:auto;margin-right:auto;width:200px;display:block;">
 <div style="text-align:center;width:200px;padding:1px;background:#aad;margin:2px;">
@@ -159,4 +164,29 @@ Want to break into the lucrative world of trading and quantitative finance? You 
 </div>
 </div>
 </div>
-<?php echo '</td>' ; ?>
+ENDDIVS;
+
+if ($share)
+  echo "<div id='share' style='padding:5px'>
+$name an ad space sharing option, if you would like to support its future development. It gives you an option to share a small fraction of your ad slots (suggested value is 5%) to show the author's ads. Use the option (in 'Support $name by Donating Ad Space') below to change the value, or turn it off (by entering 0%). You could also enable an unobtrusive, powered-by sort of link under an ad block by clicking on the right radio box.  [Pro features] Don't worry, the defaults are - 0% sharing, and no powered-by links.
+</div>" ;
+else
+  echo "<div id='share' style='padding:5px'>
+$name a small back-link to the author's blog at the bottom of your pages or invisible ones under the first two LaTeX equations (if any) on your page. Please consider turning it on by the appropriate Pro opbion (higlighted in blue) below.
+</div>" ;
+
+}
+
+echo '<td width="30%">' ;
+
+renderSupportText($plgName, $myPlugins[$plgName], $ezIsPro, $myPlugins[$plgName]['long']) ;
+
+echo '</td>' ;
+echo '<td width="30%">' ;
+
+renderProText($plgName, $myPlugins[$plgName], $ezIsPro) ;
+renderTipDivs($myPlugins[$plgName]['value'], $myPlugins[$plgName]['share']) ;
+
+echo '</td>' ;
+
+?>

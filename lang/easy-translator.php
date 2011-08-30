@@ -243,7 +243,7 @@ msgstr ""
 ?>
 <h2>Easy Translator</h2>
 <p>
-<strong><a href="options-general.php?page=easy-adsenser.php"><em>Easy AdSense</em></a> Translation Interface</strong>
+<strong><a href="options-general.php?page=easy-adsense.php"><em>Easy AdSense</em></a> Translation Interface</strong>
 </p>
 <?php
 

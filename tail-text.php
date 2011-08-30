@@ -50,13 +50,21 @@ function renderPlg($name, $plg) {
 }
 
 ?>
+<?php // change the name in the src of the iframe below to $plgName-pro
+?>
+<span id="rate">
+<iframe src="http://wordpress.org/extend/plugins/easy-adsense-pro" width="1000px" height="750px">
+</iframe>
+</span>
 
 <table class="form-table" >
 <tr>
 <td>
 
+<?php // change the title in TagToTip below to $myPlugins[$plgName] . ' Pro'
+?>
 <ul style="padding-left:10px;list-style-type:circle; list-style-position:inside;" >
-<li><font color="red">Give me some <a href="http://db.tt/qsogWB1" title="Sign up for Dropbox -- free 2GB online storage on the cloud!" target="_blank">space</a>!</font></li>
+  <li><a href="#" onclick="TagToTip('rate', TITLE, 'WordPress: Easy AdSense Pro', STICKY, 1, CLOSEBTN, true, FIX, [25, 25])"><font color="red">If you like this plugin, please give it a 5* rating.</font></a> People tend to vote or comment only when something doesn't work, and it skews the overall rating. Please do your bit to unskew it!</li>
 <li>
 <?php _e('Please report any problems. And share your thoughts and comments.', 'easy-adsenser') ; ?>&nbsp;<a href="http://wordpress.org/tags/<?php echo $plgName ; ?>" title="<?php _e('Post it in the WordPress forum', 'easy-adsenser') ; ?>" target="_blank"><?php _e("[WordPress Forum]", 'easy-adsenser') ?> </a>
 <li>

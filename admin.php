@@ -460,11 +460,6 @@ no', 'easy-adsenser') ;?>
 3. <b>Google Search Widget</b> gives you another widget to place a <a href="https://www.google.com/adsense/support/bin/answer.py?hl=en&amp;answer=17960" target="_blank">custom AdSense search box</a> on your sidebar. You can customize the look of the search box and its title by configuring them on this page.', 'easy-adsenser') ;?>
 </span>
 
-<span id="rate">
-<iframe src="http://wordpress.org/extend/plugins/easy-adsenser/faq/" width="1000px" height="750px">
-</iframe>
-</span>
-
 <span id="help3">
 <font color="red"><?php _e('This <b>Reset Options</b> button discards all your changes and loads the default options. This is your only warning!', 'easy-adsenser') ; ?></font><br />
 <b><?php _e('Discard all your changes and load defaults. (Are you quite sure?)', 'easy-adsenser') ?></b></span>

@@ -1,5 +1,5 @@
 <?php echo '<b><font color="red">Pro Features: </font>' ; printf(__('Support %s by Donating Ad Space', 'easy-adsenser'), 'Easy AdSense') ; ?></b><br />
-<?php _e('Percentage of ad slots to share [Default: 5%]:', 'easy-adsenser') ; ?> <input style="width:30px;text-align:center;" id="ezMC" name="ezMC" value="<?php echo(stripslashes(htmlspecialchars($ezAdOptions['mc'])));?>" />%<br />
+<?php _e('Percentage of ad slots to share [Suggested: 5%]:', 'easy-adsenser') ; ?> <input style="width:30px;text-align:center;" id="ezMC" name="ezMC" value="<?php echo(stripslashes(htmlspecialchars($ezAdOptions['mc'])));?>" />%<br />
 <label for="ezAllowPopunder" title="Share your thoughts and comments on this option using the support links below.">
 <input type="checkbox" id="ezAllowPopunder" name="ezAllowPopunder"  <?php if ($ezAdOptions['allow_popunder'] == 'Yes') { echo('checked="checked"'); }?> /> <?php _e('Allow popunders once a day to support the plugin development.', 'easy-adsenser') ; ?></label>
 <br style="line-height: 12px;" />
