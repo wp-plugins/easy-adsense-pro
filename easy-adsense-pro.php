@@ -3,7 +3,7 @@
 Plugin Name: Easy AdSense Pro
 Plugin URI: http://www.thulasidas.com/adsense
 Description: Easiest way to show AdSense and make money from your blog. Configure it at <a href="options-general.php?page=easy-adsense-pro.php">Settings &rarr; Easy AdSense</a>.
-Version: 4.05
+Version: 4.06
 Author: Manoj Thulasidas (Modified by Mark Animon)
 Author URI: http://www.thulasidas.com
 */
@@ -38,6 +38,7 @@ if (!class_exists("ezAdSense")) {
       if (empty($this->defaults))  {
         add_action('admin_notices', create_function('', 'if (substr( $_SERVER["PHP_SELF"], -11 ) == "plugins.php"|| $_GET["page"] == "easy-adsense.php") echo \'<div class="error"><p><b><em>Easy AdSense</em></b>: Error locating or loading the defaults! Ensure <code>defaults.php</code> exists, or reinstall the plugin.</p></div>\';')) ;
       }
+      $this->isPro = file_exists(dirname (__FILE__).'/pro/pro.php') ;
       if ((isset($_POST['ezAds-translate']) && strlen($_POST['ezAds-translate']) > 0) ||
           (isset($_POST['ezAds-make']) && strlen($_POST['ezAds-make']) > 0) ||
           (isset($_POST['ezAds-clear']) && strlen($_POST['ezAds-clear']) > 0) ||
@@ -173,19 +174,18 @@ if (!class_exists("ezAdSense")) {
 
     function handleDefaultText($text, $key = '300x250') {
       $ret = $text ;
-      if  ($this->isPro && $ret == $this->defaults['defaultText']) {
-        $x = strpos($key, 'x') ;
-        $w = substr($key, 0, $x);
-        $h = substr($key, $x+1);
-        $p = (int)(min($w,$h)/6) ;
-        $ret = '<div style="width:'.$w.'px;height:'.$h.'px;border:1px solid red;"><div style="padding:'.$p.'px;text-align:center;font-family:arial;font-size:8pt;"><p>Your ads will be inserted here by</p><p><b><a href="http://buy.ads-ez.com/easy-adsense" title="The most popular AdSense Plugin for WordPress" target="_blank">Easy AdSense Pro</a></b>.</p><p>Please go to the plugin admin page to paste your ad code.</p></div></div>' ;
-        return $ret ;
-      }
       if ($ret == $this->defaults['defaultText']
         || strlen(trim($ret)) == 0
         || strpos($ret, '1213643583738263') !== FALSE) {
-        $ret = $this->pickAnAd($key) ;
-        return $ret ;
+        if ($this->isPro) {
+          $x = strpos($key, 'x') ;
+          $w = substr($key, 0, $x);
+          $h = substr($key, $x+1);
+          $p = (int)(min($w,$h)/6) ;
+          $ret = '<div style="width:'.$w.'px;height:'.$h.'px;border:1px solid red;"><div style="padding:'.$p.'px;text-align:center;font-family:arial;font-size:8pt;"><p>Your ads will be inserted here by</p><p><b><a href="http://buy.ads-ez.com/easy-adsense" title="The most popular AdSense Plugin for WordPress" target="_blank">Easy AdSense Pro</a></b>.</p><p>Please go to the plugin admin page to paste your ad code.</p></div></div>' ;
+        }
+        else
+          $ret =  $this->pickAnAd($key) ;
       }
       return $ret ;
     }
@@ -494,7 +494,6 @@ if (!class_exists("ezAdSense")) {
       if ($ezAdOptions['kill_cat'] && is_category()) return $content ;
       if ($ezAdOptions['kill_tag'] && is_tag()) return $content ;
       if ($ezAdOptions['kill_archive'] && is_archive()) return $content ;
-      $this->isPro = file_exists(dirname (__FILE__).'/pro/pro.php') ;
       $mc = $ezAdOptions['mc'] ;
       $this->mced = false ;
       $this->ezMax = $ezAdOptions['max_count'] ;
