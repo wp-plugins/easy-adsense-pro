@@ -38,6 +38,13 @@ if (!class_exists("ezTran") && !class_exists("PO")) {
       $this->keyVal = minmatch ;
     }
 
+    // Returns a properly escaped string
+    function decorate($str, $esc) {
+      $str = stripslashes($str) ;
+      $str = addcslashes($str, $esc) ;
+      return $str ;
+    }
+
     // Returns a text-area string of the Id
     function textId() {
       $ht = round(strlen($this->id)/52 + 1) * 25 ;
@@ -45,7 +52,7 @@ if (!class_exists("ezTran") && !class_exists("PO")) {
       if ($this->keyVal > minmatch+1) {
         $col = "background-color:#ffc;border: solid 1px #f00" ;
         $tit = 'onmouseover = "Tip(\'Another similar string: ' .
-          htmlspecialchars('<br /><em><b>' . addcslashes($this->keyId, "\n") .
+          htmlspecialchars('<br /><em><b>' . $this->decorate($this->keyId, "\n") .
                            '</b></em><br /> ', ENT_QUOTES) .
           'exists. Please alert the author.\',WIDTH, 300)" ' .
           'onmouseout="UnTip()"';
@@ -63,7 +70,7 @@ if (!class_exists("ezTran") && !class_exists("PO")) {
       if ($this->tranVal > minmatch+1){
         $col = "background-color:#fdd;border: solid 1px #f00" ;
         $tit = 'onmouseover = "Tip(\'Using the translation for a similar string: ' .
-          htmlspecialchars('<br /><em><b>' . addcslashes($this->tranId, "\n") .
+          htmlspecialchars('<br /><em><b>' . $this->decorate($this->tranId, "\n") .
                            '</b></em><br />', ENT_QUOTES) .
           'Please check carefully.\',WIDTH, 300)" ' .
           'onmouseout="UnTip()"';
@@ -129,6 +136,13 @@ if (!class_exists("ezTran") && !class_exists("PO")) {
           $this->error = '<div class="error">Error: ' . $mail->ErrorInfo .
             ' Please save the pot file and <a href="http://manoj.thulasidas.com/mail.shtml" target=_blank>contact the author</a></div>' ;
       }
+    }
+
+    // Returns a properly escaped string
+    function decorate($str, $esc) {
+      $str = stripslashes($str) ;
+      $str = addcslashes($str, $esc) ;
+      return $str ;
     }
 
     // Return the contents of all PHP files in the dir specified
@@ -219,9 +233,9 @@ msgstr ""
 
 ' ;
       foreach ($POs as $n => $po) {
-        $pot .= "msgid " . '"' . addcslashes($po->id, "\n\r\"") . '"' . "\n" ;
+        $pot .= "msgid " . '"' . $this->decorate($po->id, "\n\r\"") . '"' . "\n" ;
         $t = $msg[$po->num] ;
-        $pot .= "msgstr " . '"' . addcslashes($t, "\n\r") . '"' . "\n\n" ;
+        $pot .= "msgstr " . '"' . $this->decorate($t, "\n\r") . '"' . "\n\n" ;
       }
       return $pot ;
     }
@@ -230,7 +244,7 @@ msgstr ""
     function updatePot(&$POs, $msg){
       foreach ($POs as $n => $po) {
         $t = $msg[$po->num] ;
-        $po->str = addcslashes($t, "\n\r") ;
+        $po->str = $this->decorate($t, "\n\r") ;
       }
     }
 

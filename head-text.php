@@ -20,7 +20,7 @@ along with the programs.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 function renderHeadText($name, $plg, $isPro) {
-  $value = $plg['value'];
+  $value = '<em><strong>'.$plg['value'].'</strong></em>';
   $desc = $plg['desc'] ;
   $toolTip = $plg['title'] ;
   $url = 'http://www.thulasidas.com/plugins/' . $name ;
@@ -29,13 +29,13 @@ function renderHeadText($name, $plg, $isPro) {
   $price = $plg['price'] ;
   $moreInfo =
     "&nbsp; <a href='http://buy.ads-ez.com/$name/$name.zip' title='Download the Lite version of $value'>Lite Version </a>" .
-    "&nbsp; <a href='http://buy.ads-ez.com/$name' title='Buy the Pro version of $value for \$$price'>Pro Version</a>" ;
+    "&nbsp; <a href='http://buy.ads-ez.com/$name' title='Buy the Pro version of $value for \$$price. Instant download link.'>Pro Version</a>" ;
   $toolTip .= addslashes('<br />' . $moreInfo) ;
   $why = addslashes($plg['pro']) ;
   if ($isPro) $version = 'Pro' ;
   else $version = 'Lite' ;
   echo "<b>Get Pro Version!</b>
-<a href='http://buy.ads-ez.com/$name' title='Pro version of the $name plugin'><img src='https://www.paypalobjects.com/en_GB/SG/i/btn/btn_buynowCC_LG.gif' border='0' alt='PayPal — The safer, easier way to pay online.' class='alignright'/></a>
+<a href='http://buy.ads-ez.com/$name' title='Pro version of the $name plugin. Instant download link.'><img src='https://www.paypalobjects.com/en_GB/SG/i/btn/btn_buynowCC_LG.gif' border='0' alt='PayPal — The safer, easier way to pay online.' class='alignright'/></a>
 <br />
 You are using the $version version of $value, which is available in two versions:
 <ul><li>
@@ -44,7 +44,7 @@ $moreInfo
 </ul>" ;
 }
 function renderProText($name, $plg, $isPro) {
-  $value = $plg['value'];
+  $value = '<em><strong>'.$plg['value'].'</strong></em>';
   $desc = $plg['desc'] ;
   $toolTip = $plg['title'] ;
   $price = $plg['price'] ;
@@ -59,7 +59,7 @@ function renderProText($name, $plg, $isPro) {
 </center>' ;
 
   if ($isPro) echo "You are using the \"Pro\" version. If you haven't paid your licensing fee, please go legal and <a href='http://buy.ads-ez.com/$name' title='Pro version of this plugin'>get a legal copy</a>. It costs only \$$price." ;
-  else  echo "You are using the \"Lite\" version of $value. The \"Pro\" version gives you more options. Consider <a href='http://buy.ads-ez.com/$name' title='Pro version of this plugin'>buying it</a>. It costs only \$$price." ;
+  else  echo "You are using the \"Lite\" version of $value. The \"Pro\" version gives you more options. Consider <a href='http://buy.ads-ez.com/$name' title='Pro version of this plugin. Instant download link.'>buying it</a>. It costs only \$$price." ;
 
   echo "<div id='pro'>" ;
   renderHeadText($name, $plg, $isPro) ;
@@ -67,8 +67,8 @@ function renderProText($name, $plg, $isPro) {
 }
 
 function renderSupportText($name, $plg, $isPro, $long=true) {
-  $value = $plg['value'];
-  if (!$isPro) $supportText = "<div style=\"background-color:#cff;padding:5px;border: solid 1px\" id=\"support\"><b><a href=\"http://buy.ads-ez.com/$name\" title=\"Pro version of this plugin\">Go Pro!</a> Support $value</b>" ;
+  $value = '<em><strong>'.$plg['value'].'</strong></em>';
+  if (!$isPro) $supportText = "<div style=\"background-color:#cff;padding:5px;border: solid 1px\" id=\"support\"><b><a href=\"http://buy.ads-ez.com/$name\" title=\"Pro version of this plugin. Instant download link.\">Go Pro!</a> Support $value</b>" ;
   else $supportText .= "<div style=\"background-color:#cff;padding:5px;border: solid 1px\" id=\"support\"><b>Thank you for going Pro!</b>";
   if ($long) $longText = "How about " ;
   else $longText= '' ;

@@ -2,8 +2,8 @@
 /*
 Plugin Name: Easy AdSense Pro
 Plugin URI: http://www.thulasidas.com/adsense
-Description: Easiest way to show AdSense and make money from your blog. Configure it at <a href="options-general.php?page=easy-adsense-pro.php">Settings &rarr; Easy AdSense</a>.
-Version: 4.06
+Description: Easiest way to show AdSense and make money from your blog. Configure it at <a href="options-general.php?page=easy-adsense-pro.php">Settings &rarr; Easy AdSense Pro</a>.
+Version: 4.07
 Author: Manoj Thulasidas (Modified by Mark Animon)
 Author URI: http://www.thulasidas.com
 */
@@ -36,7 +36,7 @@ if (!class_exists("ezAdSense")) {
         $this->defaults = unserialize(gzinflate(base64_decode(str_replace( "\r\n", "",$str)))) ;
       }
       if (empty($this->defaults))  {
-        add_action('admin_notices', create_function('', 'if (substr( $_SERVER["PHP_SELF"], -11 ) == "plugins.php"|| $_GET["page"] == "easy-adsense.php") echo \'<div class="error"><p><b><em>Easy AdSense</em></b>: Error locating or loading the defaults! Ensure <code>defaults.php</code> exists, or reinstall the plugin.</p></div>\';')) ;
+        add_action('admin_notices', create_function('', 'if (substr( $_SERVER["PHP_SELF"], -11 ) == "plugins.php"|| $_GET["page"] == "easy-adsense-pro.php") echo \'<div class="error"><p><b><em>Easy AdSense Pro</em></b>: Error locating or loading the defaults! Ensure <code>defaults.php</code> exists, or reinstall the plugin.</p></div>\';')) ;
       }
       $this->isPro = file_exists(dirname (__FILE__).'/pro/pro.php') ;
       if ((isset($_POST['ezAds-translate']) && strlen($_POST['ezAds-translate']) > 0) ||
@@ -44,7 +44,7 @@ if (!class_exists("ezAdSense")) {
           (isset($_POST['ezAds-clear']) && strlen($_POST['ezAds-clear']) > 0) ||
           (isset($_POST['ezAds-savePot']) && strlen($_POST['ezAds-savePot']) > 0) ||
           (isset($_POST['ezAds-mailPot']) && strlen($_POST['ezAds-mailPot']) > 0) ||
-          (isset($_POST['ezAds']) && strlen($_POST['ezAds-editMore']) > 0)) {
+          (isset($_POST['ezAds-editMore']) && strlen($_POST['ezAds-editMore']) > 0)) {
         if (file_exists (dirname (__FILE__).'/lang/easy-translator.php')){
           include (dirname (__FILE__).'/lang/easy-translator.php');
           $this->ezTran = new ezTran ;
@@ -58,12 +58,14 @@ if (!class_exists("ezAdSense")) {
 
     function setLang() {
       $locale = get_locale() ;
+      $locale = str_replace('-','_', $locale);
       $this->locale = $locale ;
-      $name =  'easy-adsener' ;
+
+      $name =  'easy-adsenser' ;
 
       if(!empty($this->locale) && $this->locale != 'en_US') {
-        $this->invite = '<hr /><font color="red"> Would you like to improve this translation of <b>Easy Adsenser</b> in your langugage (<b>' . $locale .
-          "</b>)?&nbsp; <input type='submit' name='ezAds-translate' onmouseover=\"Tip('If you would like to improve this translation, please use the translation interface. It picks up the translatable strings in &lt;b&gt;Easy AdSense&lt;/b&gt; and presents them and their existing translations in &lt;b&gt;" . $locale .
+        $this->invite = '<hr /><font color="red"> Would you like to improve this translation of <b>Easy Adsense Pro</b> in your langugage (<b>' . $locale .
+          "</b>)?&nbsp; <input type='submit' name='ezAds-translate' onmouseover=\"Tip('If you would like to improve this translation, please use the translation interface. It picks up the translatable strings in &lt;b&gt;Easy AdSense Pro&lt;/b&gt; and presents them and their existing translations in &lt;b&gt;" . $locale .
           "&lt;/b&gt; in an easy-to-edit form. You can then generate a translation file and email it to the author all from the same form. Slick, isn\'t it?  I will include your translation in the next release.', WIDTH, 350, TITLE, 'How to Translate?', STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true, FIX, [this, 0, 5])\" onmouseout=\"UnTip()\" value='Improve " . $locale . " translation' /></font>" ;
 
         $moFile = dirname(__FILE__) . '/lang/' . $this->locale . '/' . $name . '.mo';
@@ -79,8 +81,8 @@ if (!class_exists("ezAdSense")) {
             $this->locale = basename(dirname($moFile)) ;
           }
           $this->invite = '<hr /><font color="red"> Would you like to see ' .
-            '<b>Easy Adsenser</b> in your langugage (<b>' . $locale .
-            "</b>)?&nbsp; <input type='submit' name='ezAds-translate' onmouseover=\"Tip('It is easy to have &lt;b&gt;Easy AdSense&lt;/b&gt; in your language. All you have to do is to translate some strings, and email the file to the author.&lt;br /&gt;&lt;br /&gt;If you would like to help, please use the translation interface. It picks up the translatable strings in &lt;b&gt;Easy AdSense&lt;/b&gt; and presents them (and their existing translations in &lt;b&gt;" . $this->locale .
+            '<b>Easy Adsense Pro</b> in your langugage (<b>' . $locale .
+            "</b>)?&nbsp; <input type='submit' name='ezAds-translate' onmouseover=\"Tip('It is easy to have &lt;b&gt;Easy AdSense Pro&lt;/b&gt; in your language. All you have to do is to translate some strings, and email the file to the author.&lt;br /&gt;&lt;br /&gt;If you would like to help, please use the translation interface. It picks up the translatable strings in &lt;b&gt;Easy AdSense Pro&lt;/b&gt; and presents them (and their existing translations in &lt;b&gt;" . $this->locale .
           "&lt;/b&gt;, if any) in an easy-to-edit form. You can then generate a translation file and email it to the author all from the same form. Slick, isn\'t it?  I will include your translation in the next release.', WIDTH, 350, TITLE, 'How to Translate?', STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true, FIX, [this, 0, 5])\" onmouseout=\"UnTip()\" value ='Please help translate ' /></font>" ;
 
         }
@@ -357,7 +359,8 @@ if (!class_exists("ezAdSense")) {
 
         if (isset($_POST['kill_me'])) {
           remove_action('admin_menu', 'ezAdSense_ap');
-          deactivate_plugins('easy-adsense-pro/easy-adsense-pro.php', true);
+          $me = basename(dirname(__FILE__)) . '/' . basename(__FILE__);
+          deactivate_plugins($me, true);
           echo '<div class="updated"><p><strong>' ;
           _e("This plugin has been deactivated.", "easy-adsenser");
           echo '<a href="plugins.php?deactivate=true">';
@@ -513,8 +516,8 @@ if (!class_exists("ezAdSense")) {
         $unreal = '<div align="center"><font size="-3">' .
           '<a href="http://www.thulasidas.com/adsense/" ' .
           'target="_blank" title="The simplest way to put AdSense to work for you!"> ' .
-          'Easy AdSense</a> by <a href="http://www.Thulasidas.com/" ' .
-          'target="_blank" title="Unreal Blog proudly brings you Easy AdSense">' .
+          'Easy AdSense Pro</a> by <a href="http://www.Thulasidas.com/" ' .
+          'target="_blank" title="Unreal Blog proudly brings you Easy AdSense Pro">' .
           'Unreal</a></font></div>';
 
       $border = '' ;
@@ -615,8 +618,8 @@ if (!class_exists("ezAdSense")) {
       $unreal = '<div align="center"><font size="-3">' .
         '<a href="http://thulasidas.com/adsense" ' .
         'target="_blank" title="The simplest way to put AdSense to work for you!"> ' .
-        'Easy AdSense</a> by <a href="http://www.Thulasidas.com/" ' .
-        'target="_blank" title="Unreal Blog proudly brings you Easy AdSense">' .
+        'Easy AdSense Pro</a> by <a href="http://www.Thulasidas.com/" ' .
+        'target="_blank" title="Unreal Blog proudly brings you Easy AdSense Pro">' .
         'Unreal</a></font></div>';
       echo $unreal ;
     }
@@ -705,8 +708,8 @@ if (!class_exists("ezAdSense")) {
       $unreal = '<div align="center"><font size="-3">' .
         '<a href="http://thulasidas.com/adsense" ' .
         'target="_blank" title="The simplest way to put AdSense to work for you!"> ' .
-        'Easy AdSense</a> by <a href="http://www.Thulasidas.com/" ' .
-        'target="_blank" title="Unreal Blog proudly brings you Easy AdSense">' .
+        'Easy AdSense Pro</a> by <a href="http://www.Thulasidas.com/" ' .
+        'target="_blank" title="Unreal Blog proudly brings you Easy AdSense Pro">' .
         'Unreal</a></font></div>';
       echo $before_widget;
       if (!$ezAdOptions['kill_widget_title']) echo $before_title . $title . $after_title;
@@ -790,14 +793,14 @@ if (!class_exists("ezAdSense")) {
     function widget_ezAd_control() {
       echo '<p>Configure it at <br />' ;
       echo '<a href="options-general.php?page=easy-adsense-pro.php"> ';
-      echo 'Settings &rarr; Easy AdSense</a>' ;
+      echo 'Settings &rarr; Easy AdSense Pro</a>' ;
       echo '</p>' ;
     }
 
     function widget_ezAd_lu_control($widget_args = 1) {
       echo '<p>Configure it at <br />' ;
       echo '<a href="options-general.php?page=easy-adsense-pro.php"> ';
-      echo 'Settings &rarr; Easy AdSense</a>' ;
+      echo 'Settings &rarr; Easy AdSense Pro</a>' ;
       echo '</p>' ;
     }
 
@@ -805,13 +808,13 @@ if (!class_exists("ezAdSense")) {
       if (function_exists('wp_register_sidebar_widget')) {
         $widget_ops =
           array('classname' => 'widget_ezAd_ads', 'description' =>
-                'Easy AdSense: ' . __('Show a Google AdSense block in your sidebar as a widget',
+                'Easy AdSense Pro: ' . __('Show a Google AdSense block in your sidebar as a widget',
                                      'easy-adsenser'));
         wp_register_sidebar_widget('ezAd_ads', 'Google Ads',
                                    array(&$this, 'widget_ezAd_ads'), $widget_ops);
         $widget_ops =
           array('classname' => 'widget_ezAd_search', 'description' =>
-                'Easy AdSense: ' . __('Show a Google Search Box in your sidebar as a widget',
+                'Easy AdSense Pro: ' . __('Show a Google Search Box in your sidebar as a widget',
                                       'easy-adsenser'));
         wp_register_sidebar_widget('ezAd_search', 'Google Search',
                                    array(&$this, 'widget_ezAd_search'), $widget_ops);
@@ -829,7 +832,7 @@ if (!class_exists("ezAdSense")) {
           $jd = $id + 1;
           $widget_ops =
             array('classname' => 'widget_ezAd_lu', 'description' =>
-                  'Easy AdSense: ' . __('Show a Google Links Unit in your sidebar as a widget',
+                  'Easy AdSense Pro: ' . __('Show a Google Links Unit in your sidebar as a widget',
                                         'easy-adsenser') . " ($jd)");
           wp_register_sidebar_widget($reg_wid, 'Google Link Units' . " ($jd)",
                                      array(&$this, 'widget_ezAd_lu'), $widget_ops);
@@ -861,7 +864,7 @@ if (class_exists("ezAdSense")) {
       function ezAdSense_ap() {
         global $ez_ad ;
         if (function_exists('add_options_page')) {
-          add_options_page('Easy AdSense', 'Easy AdSense', 9,
+          add_options_page('Easy AdSense Pro', 'Easy AdSense Pro', 9,
                            basename(__FILE__), array(&$ez_ad, 'printAdminPage'));
         }
       }
@@ -877,7 +880,7 @@ if (class_exists("ezAdSense")) {
                   'description' =>
                   __('Show a Google AdSense block in your sidebar as a widget',
                      'easy-adsenser') );
-          $this->WP_Widget('ezAdsWidget', 'Easy AdSense: Google Ads', $widget_ops);
+          $this->WP_Widget('ezAdsWidget', 'Easy AdSense Pro: Google Ads', $widget_ops);
         }
        	function widget($args, $instance) {
           // outputs the content of the widget
@@ -907,7 +910,7 @@ if (class_exists("ezAdSense")) {
                   'description' =>
                   __('Show a Google Search Box in your sidebar as a widget',
                      'easy-adsenser') );
-          $this->WP_Widget('ezAdsSearch', 'Easy AdSense: Google Search', $widget_ops);
+          $this->WP_Widget('ezAdsSearch', 'Easy AdSense Pro: Google Search', $widget_ops);
         }
        	function widget($args, $instance) {
           // outputs the content of the widget
@@ -937,7 +940,7 @@ if (class_exists("ezAdSense")) {
                   'description' =>
                   __('Show a Google Links Unit in your sidebar as a widget',
                      'easy-adsenser') );
-          $this->WP_Widget('ezAdsLU', 'Easy AdSense: Google Link Unit', $widget_ops);
+          $this->WP_Widget('ezAdsLU', 'Easy AdSense Pro: Google Link Unit', $widget_ops);
         }
        	function widget($args, $instance) {
           // outputs the content of the widget

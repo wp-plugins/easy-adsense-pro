@@ -4,7 +4,7 @@ Donate link: http://buy.ads-ez.com/easy-adsense
 Tags: adsense, ad, ads, advertising, google
 Requires at least: 2.6
 Tested up to: 3.2
-Stable tag: 4.06
+Stable tag: 4.07
 
 Easy AdSense manages all aspects of Google AdSense for your blog: insert ads into posts and sidebar, and add a Google Search box. Easy and complete!
 
@@ -47,15 +47,15 @@ If you like Easy AdSense, you may want to check out my other plugins: [Theme Twe
 
 A major version upgrade is planned for later this year, which will be released as a new plugin, [Easy Google](http://www.thulasidas.com/plugins/easy-google/ "Easy Google, the next generation AdSense plugin"). This plugin will sport a modern, tabbed interface, and a completely re-written, refactored and optimized codebase and option data model, resulting in a more robust and extensible design, and better performance.
 
-= New in 4.06 =
+= New in 4.07 =
 
-Another minor bug fix.
+Changes to translation interface.
 
 == Upgrade Notice ==
 
-= 4.06 =
+= 4.07 =
 
-Another minor bug fix.
+Changes to translation interface.
 
 == Screenshots ==
 
@@ -74,6 +74,10 @@ Another minor bug fix.
 Although the Easy AdSense plugin is designed to handle Google AdSense efficiently, there is nothing preventing you from using the text boxes to place any other kind of text in your blog posts and pages. In particular, you can use ad text from other providers, especially in the header and footer.
 
 == Frequently Asked Questions ==
+
+= Why do I get a "Plugin does not have valid header" error? =
+
+This seems to be a problem with some WordPress installations. I have never been able to reproduce this error on any of my installations. I have found [this on the web](http://webdesign.anmari.com/2312/activation-error-plugin-does-not-have-valid-header-still-activates/ "This may give you some ideas") though.
 
 = What are the different versions of the plugin? =
 
@@ -167,6 +171,7 @@ A big "Thank You" to all my translators. Easy AdSense V2.6+ sports an *Easy Tran
 
 == Change Log ==
 
+* V4.07: Changes to translation interface. [Sep 13, 2011]
 * V4.06: Another minor bug fix. [Aug 31, 2011]
 * V4.05: Documentation and admin-page display changes. Non-critical. [Aug 30, 2011]
 * V4.04: Another bug fix. [Aug 29, 2011]

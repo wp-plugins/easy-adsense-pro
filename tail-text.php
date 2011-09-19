@@ -31,22 +31,37 @@ function makeTextWithTooltip($text, $tip, $title='', $width='')
     "onmouseout=\"UnTip()\">$text</span>" ;
   return $return ;
 }
-
+function makeTextWithTooltipTag($plg, $text, $tip, $title='', $width='')
+{
+  if (!empty($title))
+    $titleText = "TITLE, '$title',STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true,";
+  if (!empty($width))
+    $widthText = "WIDTH, $width," ;
+  $return = "<span style='text-decoration:none' " .
+    "onmouseover=\"TagToTip('". $plg . "', " .
+    "$widthText $titleText FIX, [this, 5, 5])\" " .
+    "onmouseout=\"UnTip()\">$text</span>" ;
+  echo "<div id=$plg> $tip </div>";
+  return $return ;
+}
 function renderPlg($name, $plg) {
-  $value = $plg['value'];
+  $value = '<em><strong>'.$plg['value'].'</strong></em>';
   $desc = $plg['desc'] ;
   $toolTip = $plg['title'] ;
   $url = 'http://www.thulasidas.com/plugins/' . $name ;
-  $link = '<b><a href="' . $url . '" target="_blank">' . $value . '</a> </b>' ;
+  $link = '<b><a href="' . $url . '" target="_blank">' . $value . '</a> </b> ' ;
   $text = $link . $desc ;
   $price = $plg['price'] ;
-  $moreInfo =  " &nbsp;  &nbsp; <a href='http://www.thulasidas.com/plugins/$name' title='More info about $value'> More Info </a>" .
-    "&nbsp; <a href='http://buy.ads-ez.com/$name/$name.zip' title='Download the Lite version of $value'>Get Lite Version </a>" .
-    "&nbsp; <a href='http://buy.ads-ez.com/$name' title='Buy the Pro version of $value for \$$price. Instant download link.'>Buy Pro Version</a>" ;
-  $toolTip .= addslashes('<br />' . $moreInfo) ;
-  $why = addslashes($plg['pro']) ;
-  echo "<li>" .  makeTextWithTooltip($text, $toolTip, $value, 350) .
-    makeTextWithTooltip($moreInfo, $why, "Why go Pro?", 300) . "</li>\n" ;
+  $moreInfo = " <a href='http://www.thulasidas.com/plugins/$name' title='More info about $value at Unreal Blog'>More Info</a> " ;
+  $liteVersion = " <a href='http://buy.ads-ez.com/$name/$name.zip' title='Download the Lite version of $value'>Get Lite Version</a> " ;
+  $proVersion = " <a href='http://buy.ads-ez.com/$name' title='Buy the Pro version of $value for \$$price'>Get Pro Version</a><br />" ;
+  $why = "<a href='http://buy.ads-ez.com/$name' title='Pro version of the $name plugin'><img src='https://www.paypalobjects.com/en_GB/SG/i/btn/btn_buynowCC_LG.gif' border='0' alt='PayPal — The safer, easier way to pay online.' class='alignright' /></a>
+<br />".$plg['pro'] ;
+  echo "<li>" . makeTextWithTooltip($text, $toolTip, $value, 350) .
+    makeTextWithTooltip($moreInfo, "Read more about $value at its own page.<br />".$toolTip, "More Information about $value", 300) .
+    makeTextWithTooltip($liteVersion, $toolTip, "Download $value - the Lite version", 300) .
+    makeTextWithTooltipTag($name, $proVersion, $why, "Get $value Pro!", 300) .
+    "</li>\n" ;
 }
 
 ?>
