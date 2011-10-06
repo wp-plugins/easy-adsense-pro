@@ -3,7 +3,7 @@
 Plugin Name: Easy AdSense Pro
 Plugin URI: http://www.thulasidas.com/adsense
 Description: Easiest way to show AdSense and make money from your blog. Configure it at <a href="options-general.php?page=easy-adsense-pro.php">Settings &rarr; Easy AdSense Pro</a>.
-Version: 4.07
+Version: 4.08
 Author: Manoj Thulasidas (Modified by Mark Animon)
 Author URI: http://www.thulasidas.com
 */
