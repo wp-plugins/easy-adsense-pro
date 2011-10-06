@@ -33,7 +33,8 @@ if (!class_exists("ezAdSense")) {
     function ezAdSense() { //constructor
       if (file_exists (dirname (__FILE__).'/defaults.php')){
         include (dirname (__FILE__).'/defaults.php');
-        $this->defaults = unserialize(gzinflate(base64_decode(str_replace( "\r\n", "",$str)))) ;
+        // $this->defaults = unserialize(gzinflate(base64_decode(str_replace( "\r\n", "",$str)))) ;
+        $this->defaults = $defaults ;
       }
       if (empty($this->defaults))  {
         add_action('admin_notices', create_function('', 'if (substr( $_SERVER["PHP_SELF"], -11 ) == "plugins.php"|| $_GET["page"] == "easy-adsense-pro.php") echo \'<div class="error"><p><b><em>Easy AdSense Pro</em></b>: Error locating or loading the defaults! Ensure <code>defaults.php</code> exists, or reinstall the plugin.</p></div>\';')) ;
@@ -102,53 +103,53 @@ if (!class_exists("ezAdSense")) {
 
       $ezAdSenseAdminOptions =
         array('info' => "<!-- Easy AdSense V4.00 -->\n",
-              'policy' => 'unknown',
-              'show_leadin' => 'float:right',
-              'wc_leadin' => 0,
-              'margin_leadin' => 12,
-              'text_leadin' => $this->defaults['defaultText'],
-              'show_midtext' => 'float:left',
-              'header_leadin' => false,
-              'wc_midtext' => 0,
-              'margin_midtext' => 12,
-              'text_midtext' => $this->defaults['defaultText'],
-              'show_leadout' => 'no',
-              'wc_leadout' => 0,
-              'margin_leadout' => 12,
-              'text_leadout' => $this->defaults['defaultText'],
-              'show_widget' => 'text-align:center',
-              'footer_leadout' => false,
-              'margin_widget' => 12,
-              'text_widget' => $this->defaults['defaultText'],
-              'show_lu' => 'text-align:center',
-              'margin_lu' => 12,
-              'text_lu' => $this->defaults['defaultText'],
-              'title_gsearch' => '',
-              'margin_gsearch' => 0,
-              'text_gsearch' => $this->defaults['defaultText'],
+          'policy' => 'unknown',
+          'show_leadin' => 'float:right',
+          'wc_leadin' => 0,
+          'margin_leadin' => 12,
+          'text_leadin' => $this->defaults['defaultText'],
+          'show_midtext' => 'float:left',
+          'header_leadin' => false,
+          'wc_midtext' => 0,
+          'margin_midtext' => 12,
+          'text_midtext' => $this->defaults['defaultText'],
+          'show_leadout' => 'no',
+          'wc_leadout' => 0,
+          'margin_leadout' => 12,
+          'text_leadout' => $this->defaults['defaultText'],
+          'show_widget' => 'text-align:center',
+          'footer_leadout' => false,
+          'margin_widget' => 12,
+          'text_widget' => $this->defaults['defaultText'],
+          'show_lu' => 'text-align:center',
+          'margin_lu' => 12,
+          'text_lu' => $this->defaults['defaultText'],
+          'title_gsearch' => '',
+          'margin_gsearch' => 0,
+          'text_gsearch' => $this->defaults['defaultText'],
           'mc' => 0, // Animon -- changed to 0
           'allow_popunder' => 'No', // Animon -- changed to No
-              'allow_exitjunction' => 'unknown',
-              'max_count' => 3,
+          'allow_exitjunction' => 'unknown',
+          'max_count' => 3,
           'max_link' => 0, // Animon -- changed to 0
-              'force_midad' => false,
-              'force_widget' => false,
-              'allow_feeds' => false,
-              'kill_pages' => false,
-              'show_borders' => false,
-              'border_width' => 1,
-              'border_normal' => '00FFFF',
-              'border_color' => 'FF0000',
-              'border_widget' => false,
-              'border_lu' => false,
-              'limit_lu' => 1,
-              'kill_attach' => false,
-              'kill_home' => false,
-              'kill_front' => false,
-              'kill_cat' => false,
-              'kill_tag' => false,
-              'kill_archive' => false,
-              'kill_inline' => false
+          'force_midad' => false,
+          'force_widget' => false,
+          'allow_feeds' => false,
+          'kill_pages' => false,
+          'show_borders' => false,
+          'border_width' => 1,
+          'border_normal' => '00FFFF',
+          'border_color' => 'FF0000',
+          'border_widget' => false,
+          'border_lu' => false,
+          'limit_lu' => 1,
+          'kill_attach' => false,
+          'kill_home' => false,
+          'kill_front' => false,
+          'kill_cat' => false,
+          'kill_tag' => false,
+          'kill_archive' => false,
+          'kill_inline' => false
               );
       $ezAdOptions = get_option($mOptions);
       if (empty($ezAdOptions)) {
