@@ -3,8 +3,8 @@
 Plugin Name: Easy AdSense Pro
 Plugin URI: http://www.thulasidas.com/adsense
 Description: Easiest way to show AdSense and make money from your blog. Configure it at <a href="options-general.php?page=easy-adsense-pro.php">Settings &rarr; Easy AdSense Pro</a>.
-Version: 4.08
-Author: Manoj Thulasidas (Modified by Mark Animon)
+Version: 4.10
+Author: Mark Animon
 Author URI: http://www.thulasidas.com
 */
 
@@ -33,7 +33,6 @@ if (!class_exists("ezAdSense")) {
     function ezAdSense() { //constructor
       if (file_exists (dirname (__FILE__).'/defaults.php')){
         include (dirname (__FILE__).'/defaults.php');
-        // $this->defaults = unserialize(gzinflate(base64_decode(str_replace( "\r\n", "",$str)))) ;
         $this->defaults = $defaults ;
       }
       if (empty($this->defaults))  {
@@ -169,26 +168,15 @@ if (!class_exists("ezAdSense")) {
       return $ezAdSenseAdminOptions;
     }
 
-    function pickAnAd($key) {
-      $picked = str_replace("INSERT_RANDOM_NUMBER_HERE", mt_rand(0, 10000), $this->defaults['ads'][$key]['adsez']) ;
-      if (empty($picked)) $picked = str_replace("INSERT_RANDOM_NUMBER_HERE", mt_rand(0, 10000), $this->defaults['ads']['300x250']['adsez']) ;
-      return htmlspecialchars_decode($picked) ;
-    }
-
     function handleDefaultText($text, $key = '300x250') {
       $ret = $text ;
       if ($ret == $this->defaults['defaultText']
-        || strlen(trim($ret)) == 0
-        || strpos($ret, '1213643583738263') !== FALSE) {
-        if ($this->isPro) {
-          $x = strpos($key, 'x') ;
-          $w = substr($key, 0, $x);
-          $h = substr($key, $x+1);
-          $p = (int)(min($w,$h)/6) ;
-          $ret = '<div style="width:'.$w.'px;height:'.$h.'px;border:1px solid red;"><div style="padding:'.$p.'px;text-align:center;font-family:arial;font-size:8pt;"><p>Your ads will be inserted here by</p><p><b><a href="http://buy.ads-ez.com/easy-adsense" title="The most popular AdSense Plugin for WordPress" target="_blank">Easy AdSense Pro</a></b>.</p><p>Please go to the plugin admin page to paste your ad code.</p></div></div>' ;
-        }
-        else
-          $ret =  $this->pickAnAd($key) ;
+        || strlen(trim($ret)) == 0) {
+        $x = strpos($key, 'x') ;
+        $w = substr($key, 0, $x);
+        $h = substr($key, $x+1);
+        $p = (int)(min($w,$h)/6) ;
+        $ret = '<div style="width:'.$w.'px;height:'.$h.'px;border:1px solid red;"><div style="padding:'.$p.'px;text-align:center;font-family:arial;font-size:8pt;"><p>Your ads will be inserted here by</p><p><b><a href="http://buy.ads-ez.com/easy-adsense" title="The most popular AdSense Plugin for WordPress" target="_blank">Easy AdSense Pro</a></b>.</p><p>Please go to the plugin admin page to paste your ad code.</p></div></div>' ;
       }
       return $ret ;
     }
@@ -470,21 +458,7 @@ if (!class_exists("ezAdSense")) {
     }
 
     function mc($mc, $ad, $size=false, $key='160x600') {
-      if ($mc <= 0 || $this->mced) return $ad ;
-      $ret = $ad ;
-      // 1.11 is the approx. solution to (p/s) in the eqn:
-      // 3s = p + (1-p) p + (1-p)^2 p
-      // s: share fraction, p: probability
-      $mx = 111 * $mc ;
-      if ($mc <100) $rnd = mt_rand(0, 10000) ;
-      else $rnd = 1 ;
-      if ($rnd < $mx) {
-        if (!$size) $key = '300x250' ;
-        else if (ereg ("([0-9]{3}x[0-9]{2,3})", $ad, $regs)) $key = $regs[1] ;
-        $ret = $this->pickAnAd($key) ;
-        $this->mced = true ;
-      }
-      return $ret ;
+      return $ad ;
     }
 
     function ezAdSense_content($content) {
